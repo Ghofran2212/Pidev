@@ -1,0 +1,126 @@
+<!-- Content Header -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1 class="m-0 font-weight-bold">Admin Dashboard</h1>
+        <p class="text-muted">Welcome back! Here's what's happening with CampWay</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="content">
+  <div class="container-fluid">
+    
+    <!-- Stats Cards Row -->
+    <div class="row">
+      
+      <!-- Total Revenue Card -->
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card stats-card h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted mb-1 small">Total Revenue</p>
+              <h3 class="mb-0 font-weight-bold">$121,500</h3>
+              <small class="text-success">
+                <i class="fas fa-arrow-up"></i> +12.5%
+              </small>
+            </div>
+            <div class="stats-icon bg-success-light">
+              <i class="fas fa-dollar-sign text-success"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Bookings Card -->
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card stats-card h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted mb-1 small">Active Bookings</p>
+              <h3 class="mb-0 font-weight-bold">431</h3>
+              <small class="text-success">
+                <i class="fas fa-arrow-up"></i> +8.2%
+              </small>
+            </div>
+            <div class="stats-icon bg-primary-light">
+              <i class="fas fa-map-marker-alt text-primary"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Users Card -->
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card stats-card h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted mb-1 small">Total Users</p>
+              <h3 class="mb-0 font-weight-bold">4,321</h3>
+              <small class="text-success">
+                <i class="fas fa-arrow-up"></i> +23.1%
+              </small>
+            </div>
+            <div class="stats-icon bg-purple-light">
+              <i class="fas fa-users text-purple"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Sales Card -->
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card stats-card h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <p class="text-muted mb-1 small">Product Sales</p>
+              <h3 class="mb-0 font-weight-bold">856</h3>
+              <small class="text-success">
+                <i class="fas fa-arrow-up"></i> +15.3%
+              </small>
+            </div>
+            <div class="stats-icon bg-warning-light">
+              <i class="fas fa-shopping-bag text-warning"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row mt-4">
+      
+      <!-- Revenue Overview Chart -->
+      <div class="col-lg-7 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-white border-0">
+            <h5 class="card-title mb-0 font-weight-bold">Revenue Overview</h5>
+            <p class="text-muted small mb-0">Last 6 months performance</p>
+          </div>
+          <div class="card-body">
+            <canvas id="revenueChart" height="280"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Bookings Chart -->
+      <div class="col-lg-5 mb-3">
+        <div class="card h-100">
+          <div class="card-header bg-white border-0">
+            <h5 class="card-title mb-0 font-weight-bold">Weekly Bookings</h5>
+            <p class="text-muted small mb-0">This week's booking activity</p>
+          </div>
+          <div class="card-body">
+            <canvas id="weeklyChart" height="280"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
