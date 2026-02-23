@@ -2,9 +2,9 @@
   <div class="container">
     <div class="row justify-content-center align-items-center min-vh-100">
       <div class="col-lg-6 col-md-8">
-        
+
         <div class="register-card">
-          
+
           <div class="text-center mb-4">
             <div class="register-logo mb-3">
               <i class="fas fa-campground"></i>
@@ -13,8 +13,8 @@
             <p class="text-muted">Create your account and start exploring</p>
           </div>
 
-          <form>
-            
+          <form (ngSubmit)="onSubmit()">
+
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
@@ -25,7 +25,8 @@
                         <i class="fas fa-user"></i>
                       </span>
                     </div>
-                    <input type="text" class="form-control" placeholder="John">
+                    <input type="text" class="form-control" name="firstName" [(ngModel)]="userData.firstName"
+                      placeholder="John" required>
                   </div>
                 </div>
               </div>
@@ -39,7 +40,8 @@
                         <i class="fas fa-user"></i>
                       </span>
                     </div>
-                    <input type="text" class="form-control" placeholder="Doe">
+                    <input type="text" class="form-control" name="lastName" [(ngModel)]="userData.lastName"
+                      placeholder="Doe" required>
                   </div>
                 </div>
               </div>
@@ -53,7 +55,8 @@
                     <i class="fas fa-envelope"></i>
                   </span>
                 </div>
-                <input type="email" class="form-control" placeholder="your.email@example.com">
+                <input type="email" class="form-control" name="email" [(ngModel)]="userData.email"
+                  placeholder="your.email@example.com" required>
               </div>
             </div>
 
@@ -65,7 +68,8 @@
                     <i class="fas fa-phone"></i>
                   </span>
                 </div>
-                <input type="tel" class="form-control" placeholder="+1 (555) 123-4567">
+                <input type="tel" class="form-control" name="phoneNumber" [(ngModel)]="userData.phoneNumber"
+                  placeholder="+1 (555) 123-4567">
               </div>
             </div>
 
@@ -77,7 +81,8 @@
                     <i class="fas fa-lock"></i>
                   </span>
                 </div>
-                <input type="password" class="form-control" placeholder="Create a strong password">
+                <input type="password" class="form-control" name="password" [(ngModel)]="userData.password"
+                  placeholder="Create a strong password" required>
               </div>
             </div>
 
@@ -89,14 +94,29 @@
                     <i class="fas fa-lock"></i>
                   </span>
                 </div>
-                <input type="password" class="form-control" placeholder="Confirm your password">
+                <input type="password" class="form-control" name="confirmPassword"
+                  [(ngModel)]="userData.confirmPassword" placeholder="Confirm your password" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">I am a...</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-users-cog"></i>
+                  </span>
+                </div>
+                <select class="form-control" name="role" [(ngModel)]="userData.role" required>
+                  <option *ngFor="let role of roles" [value]="role.value">{{role.label}}</option>
+                </select>
               </div>
             </div>
 
             <div class="custom-control custom-checkbox mb-4">
-              <input type="checkbox" class="custom-control-input" id="terms">
+              <input type="checkbox" class="custom-control-input" id="terms" required>
               <label class="custom-control-label" for="terms">
-                I agree to the <a href="#" class="text-success">Terms & Conditions</a> and <a href="#" class="text-success">Privacy Policy</a>
+                I agree to the <a href="javascript:void(0)" class="text-success hover-underline">Terms & Conditions</a>
               </label>
             </div>
 
@@ -123,7 +143,7 @@
 
             <div class="text-center mt-4">
               <p class="mb-0">
-                Already have an account? 
+                Already have an account?
                 <a routerLink="/login" class="text-success font-weight-bold">Login</a>
               </p>
             </div>

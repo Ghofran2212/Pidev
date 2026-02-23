@@ -29,6 +29,15 @@ import { MessagesComponent } from './frontoffice/pages/messages/messages.compone
 import { LoginComponent } from './frontoffice/pages/login/login.component';
 import { RegisterComponent } from './frontoffice/pages/register/register.component';
 
+import { FormsModule } from '@angular/forms';
+import { DeliveryComponent } from './frontoffice/pages/delivery/delivery.component';
+import { CampsiteOwnerComponent } from './dashboards/campsite-owner/campsite-owner.component';
+import { ForumModeratorComponent } from './dashboards/forum-moderator/forum-moderator.component';
+import { EventOrganizerComponent } from './dashboards/event-organizer/event-organizer.component';
+import { CartComponent } from './frontoffice/pages/cart/cart.component';
+import { BookingsComponent } from './frontoffice/pages/bookings/bookings.component';
+import { ProductDetailComponent } from './frontoffice/pages/product-detail/product-detail.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,11 +61,19 @@ import { RegisterComponent } from './frontoffice/pages/register/register.compone
     ForumComponent,
     MessagesComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DeliveryComponent,
+    CampsiteOwnerComponent,
+    ForumModeratorComponent,
+    EventOrganizerComponent,
+    CartComponent,
+    BookingsComponent,
+    ProductDetailComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [
     provideClientHydration()

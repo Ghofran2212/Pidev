@@ -2,10 +2,10 @@
   <div class="container">
     <div class="row justify-content-center align-items-center min-vh-100">
       <div class="col-lg-5 col-md-7">
-        
+
         <!-- Login Card -->
         <div class="login-card">
-          
+
           <!-- Logo Section -->
           <div class="text-center mb-4">
             <div class="login-logo mb-3">
@@ -16,8 +16,8 @@
           </div>
 
           <!-- Login Form -->
-          <form>
-            
+          <form (ngSubmit)="onSubmit()">
+
             <!-- Email Input -->
             <div class="form-group">
               <label class="form-label">Email Address</label>
@@ -27,7 +27,8 @@
                     <i class="fas fa-envelope"></i>
                   </span>
                 </div>
-                <input type="email" class="form-control" placeholder="Enter your email">
+                <input type="email" class="form-control" name="email" [(ngModel)]="credentials.email"
+                  placeholder="Enter your email" required>
               </div>
             </div>
 
@@ -40,7 +41,8 @@
                     <i class="fas fa-lock"></i>
                   </span>
                 </div>
-                <input type="password" class="form-control" placeholder="Enter your password">
+                <input type="password" class="form-control" name="password" [(ngModel)]="credentials.password"
+                  placeholder="Enter your password" required>
               </div>
             </div>
 
@@ -80,8 +82,8 @@
             <!-- Sign Up Link -->
             <div class="text-center mt-4">
               <p class="mb-0">
-                Don't have an account? 
-                <a href="#" class="text-success font-weight-bold">Sign Up</a>
+                Don't have an account?
+                <a routerLink="/register" class="text-success font-weight-bold">Sign Up</a>
               </p>
             </div>
 

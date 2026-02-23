@@ -1,3 +1,19 @@
 .wrapper {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.content-container {
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+.content-wrapper {
+  flex: 1;
+  background-color: #f8f9fa;
+}
+
+.navbar {
+  height: 60px;
 }

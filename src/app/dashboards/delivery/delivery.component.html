@@ -1,0 +1,36 @@
+<div class="content-header px-4 pt-4">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 font-weight-bold">Delivery Assignments</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content px-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 mb-4" *ngFor="let delivery of deliveries">
+                <div class="card border-0 shadow-sm border-left border-success h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6 class="font-weight-bold text-success">#{{delivery.id}}</h6>
+                            <span class="badge" [class.badge-primary]="delivery.status === 'In Transit'"
+                                [class.badge-warning]="delivery.status === 'Pending'"
+                                [class.badge-success]="delivery.status === 'Delivered'">{{delivery.status}}</span>
+                        </div>
+                        <p class="mb-1 small"><strong>Receiver:</strong> {{delivery.receiver}}</p>
+                        <p class="mb-3 small"><strong>Destination:</strong> {{delivery.destination}}</p>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Assigned: {{delivery.assigned}}</small>
+                            <button class="btn btn-success btn-sm px-3" (click)="markDelivered(delivery)"
+                                *ngIf="delivery.status !== 'Delivered'">Mark Delivered</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

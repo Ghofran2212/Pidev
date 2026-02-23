@@ -1,1 +1,175 @@
-<p>events works!</p>
+<div class="events-page py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="font-weight-bold mb-3">Upcoming Camping & Trips</h2>
+                <p class="text-muted">Explore our curated list of events and outdoor expeditions.</p>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-center gap-2">
+                    <button *ngFor="let cat of categories" (click)="selectCategory(cat)"
+                        [class.btn-success]="selectedCategory === cat"
+                        [class.btn-outline-success]="selectedCategory !== cat" class="btn px-4 rounded-pill">
+                        {{cat}}s
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Event Card -->
+            <div class="col-lg-4 col-md-6 mb-4" *ngFor="let event of filteredEvents">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden event-card cursor-pointer"
+                    (click)="openDetails(event)">
+                    <div class="event-image position-relative">
+                        <img [src]="event.imageUrl" class="card-img-top" alt="{{event.title}}"
+                            style="height: 200px; object-fit: cover;">
+
+                        <!-- Sponsored Badge -->
+                        <div class="sponsored-badge px-3 py-1 position-absolute" *ngIf="event.isSponsored"
+                            style="top: 15px; right: 15px; background: rgba(255, 193, 7, 0.9); border-radius: 20px; font-size: 0.8rem;">
+                            <i class="fas fa-star mr-1 text-white"></i>
+                            <span class="text-white font-weight-bold">Sponsored</span>
+                        </div>
+
+                        <div class="category-badge px-3 py-1 position-absolute"
+                            style="top: 15px; left: 15px; background: rgba(0, 0, 0, 0.6); color: white; border-radius: 20px; font-size: 0.8rem;">
+                            {{event.category}}
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge badge-light text-success px-3 py-2">
+                                <i class="far fa-calendar-alt mr-1"></i>
+                                {{event.date | date:'MMM d, yyyy'}}
+                            </span>
+                            <span class="h5 mb-0 text-success font-weight-bold">${{event.price}}</span>
+                        </div>
+
+                        <h5 class="card-title font-weight-bold mb-3">{{event.title}}</h5>
+                        <p class="card-text text-muted small mb-4">{{event.description | slice:0:100}}...</p>
+
+                        <div class="d-flex align-items-center mb-4 text-muted small">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            {{event.location}}
+                        </div>
+
+                        <button class="btn btn-success btn-block" (click)="$event.stopPropagation(); bookEvent(event)">
+                            <i class="fas fa-ticket-alt mr-2"></i>Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="text-center py-5" *ngIf="filteredEvents.length === 0">
+            <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+            <h5>No events found in this category.</h5>
+        </div>
+    </div>
+</div>
+
+<!-- Event Details Modal -->
+<div class="modal-overlay" *ngIf="selectedEvent" (click)="closeDetails()">
+    <div class="modal-content shadow-lg p-5" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="closeDetails()">&times;</button>
+        <div class="row">
+            <div class="col-md-6">
+                <img [src]="selectedEvent.imageUrl" class="img-fluid rounded shadow" alt="{{selectedEvent.title}}">
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <small class="text-success font-weight-bold text-uppercase">{{selectedEvent.category}}</small>
+                    <span class="badge badge-warning" *ngIf="selectedEvent.isSponsored">SPONSORED</span>
+                </div>
+                <h2 class="font-weight-bold mb-3">{{selectedEvent.title}}</h2>
+                <div class="d-flex gap-4 mb-4 text-muted">
+                    <span><i class="fas fa-calendar-alt text-success mr-2"></i>{{selectedEvent.date |
+                        date:'fullDate'}}</span>
+                    <span><i class="fas fa-map-marker-alt text-success mr-2"></i>{{selectedEvent.location}}</span>
+                </div>
+                <p class="lead text-muted mb-4">{{selectedEvent.description}}</p>
+
+                <div class="sponsor-info d-flex align-items-center mb-4 p-3 bg-light rounded"
+                    *ngIf="selectedEvent.isSponsored">
+                    <img [src]="selectedEvent.sponsorLogoUrl" class="rounded-circle mr-3"
+                        style="width: 40px; height: 40px;">
+                    <div>
+                        <p class="mb-0 small text-muted">Proudly sponsored by</p>
+                        <h6 class="mb-0 font-weight-bold">{{selectedEvent.sponsorName}}</h6>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-success font-weight-bold mb-0">${{selectedEvent.price}}</h3>
+                </div>
+
+                <button class="btn btn-success btn-lg btn-block" (click)="bookEvent(selectedEvent)">
+                    Book My Spot Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .event-card {
+        transition: all 0.3s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, .1) !important;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 2rem;
+    }
+
+    .modal-content {
+        background: #fff;
+        border-radius: 20px;
+        max-width: 1000px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        line-height: 1;
+        color: #adb5bd;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .gap-2 {
+        gap: 0.5rem;
+    }
+
+    .gap-4 {
+        gap: 1.5rem;
+    }
+</style>

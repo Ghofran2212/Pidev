@@ -1,0 +1,39 @@
+<div class="content-header px-4 pt-4">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 font-weight-bold">Forum Moderation</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content px-4">
+    <div class="container-fluid">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title font-weight-bold mb-0">Reported Posts</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item p-4" *ngFor="let report of [1,2]">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="font-weight-bold mb-1">Offensive Content in "Best Hiking Gear"</h6>
+                                <p class="text-muted small mb-2">Reported by <strong>User123</strong> for "Inappropriate
+                                    Language"</p>
+                                <div class="bg-light p-3 rounded mb-3 small">
+                                    "You're an idiot if you think this tent is good. It's absolute trash..."
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button class="btn btn-warning btn-sm mb-1 block">Warn User</button><br>
+                                <button class="btn btn-danger btn-sm">Delete Post</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

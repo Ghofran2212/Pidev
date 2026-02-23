@@ -1,1 +1,116 @@
-<p>messages works!</p>
+<div class="messages-page py-5 bg-light min-vh-100">
+    <div class="container">
+        <div class="card border-0 shadow-sm overflow-hidden">
+            <div class="row no-gutters" style="height: 700px;">
+                <!-- Sessions Sidebar -->
+                <div class="col-md-4 border-right bg-white">
+                    <div class="p-4 border-bottom bg-light">
+                        <h5 class="font-weight-bold mb-0">Messages</h5>
+                    </div>
+                    <div class="list-group list-group-flush scrollable-area">
+                        <button *ngFor="let session of sessions" (click)="selectSession(session)"
+                            [class.active]="selectedSession?.id === session.id"
+                            class="list-group-item list-group-item-action border-0 p-4 d-flex align-items-center">
+                            <div class="avatar mr-3">
+                                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <h6 class="font-weight-bold mb-0">{{session.participantName}}</h6>
+                                    <small class="text-muted">{{session.lastMessageDate | date:'shortTime'}}</small>
+                                </div>
+                                <p class="text-muted small text-truncate mb-0">{{session.lastMessage}}</p>
+                            </div>
+                            <span class="badge badge-success badge-pill ml-2"
+                                *ngIf="session.unreadCount > 0">{{session.unreadCount}}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Area -->
+                <div class="col-md-8 bg-white d-flex flex-column">
+                    <ng-container *ngIf="selectedSession; else emptyState">
+                        <!-- Chat Header -->
+                        <div class="p-4 border-bottom bg-light d-flex align-items-center">
+                            <div class="avatar mr-3">
+                                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center"
+                                    style="width: 40px; height: 40px;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                            </div>
+                            <h6 class="font-weight-bold mb-0">{{selectedSession.participantName}}</h6>
+                        </div>
+
+                        <!-- Messages Area -->
+                        <div class="flex-grow-1 p-4 scrollable-area bg-white" #scrollMe
+                            [scrollTop]="scrollMe.scrollHeight">
+                            <div class="message-wrapper mb-3" *ngFor="let msg of messages"
+                                [class.sent]="msg.senderId !== selectedSession.participantId">
+                                <div class="message-bubble p-3 shadow-sm rounded-lg"
+                                    [class.bg-success]="msg.senderId !== selectedSession.participantId"
+                                    [class.text-white]="msg.senderId !== selectedSession.participantId"
+                                    [class.bg-light]="msg.senderId === selectedSession.participantId">
+                                    {{msg.content}}
+                                    <div class="small mt-1 text-right"
+                                        [class.text-white-50]="msg.senderId !== selectedSession.participantId"
+                                        [class.text-muted]="msg.senderId === selectedSession.participantId">
+                                        {{msg.date | date:'shortTime'}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center py-5" *ngIf="messages.length === 0">
+                                <p class="text-muted">No messages yet. Say hello!</p>
+                            </div>
+                        </div>
+
+                        <!-- Input Area -->
+                        <div class="p-4 border-top">
+                            <form (ngSubmit)="sendMessage()" class="d-flex">
+                                <input type="text" class="form-control mr-2" placeholder="Type a message..."
+                                    name="newMessage" [(ngModel)]="newMessage">
+                                <button type="submit" class="btn btn-success px-4" [disabled]="!newMessage.trim()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #emptyState>
+                        <div class="h-100 d-flex flex-column align-items-center justify-content-center text-center p-5">
+                            <i class="far fa-comments fa-4x text-muted mb-4"></i>
+                            <h5 class="font-weight-bold">Your Messages</h5>
+                            <p class="text-muted">Select a conversation to start chatting.</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .scrollable-area {
+        overflow-y: auto;
+    }
+
+    .message-wrapper {
+        display: flex;
+    }
+
+    .message-wrapper.sent {
+        justify-content: flex-end;
+    }
+
+    .message-bubble {
+        max-width: 70%;
+    }
+
+    .list-group-item.active {
+        background-color: #f8f9fa !important;
+        border-left: 4px solid #28a745 !important;
+    }
+</style>

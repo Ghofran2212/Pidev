@@ -1,1 +1,233 @@
-<p>campsites works!</p>
+<div class="campsites-page py-5">
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-5">
+            <div class="col-lg-8">
+                <h2 class="font-weight-bold mb-2">Find Your Perfect Spot</h2>
+                <p class="text-muted lead">Discover both managed private campsites and wild ownerless spots.</p>
+            </div>
+            <div class="col-lg-4 d-flex align-items-end justify-content-lg-end">
+                <div class="input-group shadow-sm border rounded-pill overflow-hidden">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-white border-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control border-0 px-2" [(ngModel)]="searchQuery"
+                        (input)="applyFilters()" placeholder="Search location, name...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters & Sorting -->
+        <div class="row mb-5">
+            <div class="col-12 d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div class="btn-group shadow-sm p-1 bg-white rounded-pill">
+                    <button class="btn btn-sm rounded-pill px-4" [class.btn-success]="filterType === 'All'"
+                        [class.btn-light]="filterType !== 'All'" (click)="setFilterType('All')">All Sites</button>
+                    <button class="btn btn-sm rounded-pill px-4" [class.btn-success]="filterType === 'Owned'"
+                        [class.btn-light]="filterType !== 'Owned'"
+                        (click)="setFilterType('Owned')">Private/Owned</button>
+                    <button class="btn btn-sm rounded-pill px-4" [class.btn-success]="filterType === 'Ownerless'"
+                        [class.btn-light]="filterType !== 'Ownerless'"
+                        (click)="setFilterType('Ownerless')">Wild/Ownerless</button>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <span class="text-muted small mr-3">Sort by:</span>
+                    <select class="form-control form-control-sm border-0 shadow-sm rounded-pill pr-4"
+                        [(ngModel)]="sortBy" (change)="applyFilters()" style="width: auto;">
+                        <option value="name">Name</option>
+                        <option value="price">Price (Low to High)</option>
+                        <option value="rating">Rating (High to Low)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campsites Grid -->
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4" *ngFor="let site of filteredCampsites">
+                <div class="card h-100 border-0 shadow-sm campsite-card overflow-hidden" (click)="openDetails(site)">
+                    <div class="position-relative">
+                        <img [src]="site.imageUrl" class="card-img-top" style="height: 220px; object-fit: cover;">
+                        <span class="badge position-absolute shadow-sm" [class.badge-primary]="site.hasOwner"
+                            [class.badge-secondary]="!site.hasOwner"
+                            style="top: 15px; left: 15px; padding: 6px 15px; border-radius: 20px;">
+                            {{ site.hasOwner ? 'Private' : 'Wild' }}
+                        </span>
+                        <div class="rating-badge position-absolute"
+                            style="bottom: 15px; right: 15px; background: rgba(0,0,0,0.6); color: white; padding: 4px 12px; border-radius: 20px;">
+                            <i class="fas fa-star text-warning mr-1"></i> {{site.rating}}
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="font-weight-bold mb-2">{{site.name}}</h5>
+                        <p class="text-muted small mb-3"><i class="fas fa-map-marker-alt text-success mr-1"></i>
+                            {{site.location}}</p>
+                        <p class="text-muted small mb-4 line-3">{{site.description}}</p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <span class="price-text" *ngIf="site.pricePerNight > 0">
+                                <span class="h4 font-weight-bold text-success mb-0">${{site.pricePerNight}}</span>
+                                <small class="text-muted">/ night</small>
+                            </span>
+                            <span class="h4 font-weight-bold text-success mb-0"
+                                *ngIf="site.pricePerNight === 0">FREE</span>
+                            <button class="btn btn-outline-success btn-sm rounded-pill px-4">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="text-center py-5" *ngIf="filteredCampsites.length === 0">
+            <i class="fas fa-campground fa-3x text-muted mb-3"></i>
+            <h5>No campsites found. Try adjusting your filters.</h5>
+        </div>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="modal-overlay" *ngIf="selectedCampsite" (click)="closeDetails()">
+    <div class="modal-content shadow-lg p-5" (click)="$event.stopPropagation()">
+        <button class="close-btn" (click)="closeDetails()">&times;</button>
+        <div class="row">
+            <div class="col-md-6">
+                <img [src]="selectedCampsite.imageUrl" class="img-fluid rounded shadow-lg mb-4"
+                    style="min-height: 400px; object-fit: cover;">
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-center mb-2">
+                    <span class="badge mr-2" [class.badge-primary]="selectedCampsite.hasOwner"
+                        [class.badge-secondary]="!selectedCampsite.hasOwner">
+                        {{ selectedCampsite.hasOwner ? 'Private Site' : 'Wild Spot' }}
+                    </span>
+                    <div class="text-warning small">
+                        <i class="fas fa-star" *ngFor="let s of [1,2,3,4,5]"
+                            [style.opacity]="s <= selectedCampsite.rating ? 1 : 0.2"></i>
+                    </div>
+                </div>
+                <h2 class="font-weight-bold mb-3">{{selectedCampsite.name}}</h2>
+                <p class="text-muted mb-4 lead">{{selectedCampsite.description}}</p>
+
+                <div class="row mb-5">
+                    <div class="col-6">
+                        <small class="text-muted d-block mb-1 text-uppercase font-weight-bold">Location</small>
+                        <span><i
+                                class="fas fa-map-marker-alt text-success mr-2"></i>{{selectedCampsite.location}}</span>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted d-block mb-1 text-uppercase font-weight-bold">Capacity</small>
+                        <span><i class="fas fa-users text-success mr-2"></i>Up to {{selectedCampsite.maxCapacity}}
+                            people</span>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h6 class="font-weight-bold mb-3">Amenities</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge badge-light border px-3 py-2" *ngFor="let am of selectedCampsite.amenities">
+                            <i class="fas fa-check text-success mr-1"></i> {{am}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center p-4 bg-light rounded-lg">
+                    <div>
+                        <span class="h2 font-weight-bold text-success mb-0"
+                            *ngIf="selectedCampsite.pricePerNight > 0">${{selectedCampsite.pricePerNight}}</span>
+                        <span class="h2 font-weight-bold text-success mb-0"
+                            *ngIf="selectedCampsite.pricePerNight === 0">FREE</span>
+                        <small class="text-muted ml-1" *ngIf="selectedCampsite.pricePerNight > 0">/ night</small>
+                    </div>
+                    <button class="btn btn-success btn-lg px-5 shadow-sm rounded-pill"
+                        *ngIf="selectedCampsite.hasOwner">Book Now</button>
+                    <button class="btn btn-outline-success btn-lg px-5 rounded-pill"
+                        *ngIf="!selectedCampsite.hasOwner">Get Directions</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .campsite-card {
+        transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+        cursor: pointer;
+        border-radius: 15px;
+    }
+
+    .campsite-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .line-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        padding: 2rem;
+    }
+
+    .modal-content {
+        background: #fff;
+        border-radius: 25px;
+        max-width: 1100px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: #f8f9fa;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        font-size: 1.5rem;
+        line-height: 1;
+        color: #343a40;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    .close-btn:hover {
+        background: #e9ecef;
+    }
+
+    .gap-2 {
+        gap: 0.5rem;
+    }
+
+    .gap-3 {
+        gap: 1rem;
+    }
+
+    .rounded-lg {
+        border-radius: 15px;
+    }
+</style>

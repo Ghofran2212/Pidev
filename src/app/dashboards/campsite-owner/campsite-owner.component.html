@@ -1,0 +1,91 @@
+<div class="content-header px-4 pt-4">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 font-weight-bold">Campsite Management</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content px-4">
+    <div class="container-fluid">
+        <!-- Stats Cards -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info shadow-sm">
+                    <div class="inner p-3">
+                        <h3>4</h3>
+                        <p>Active Campsites</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-campground"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success shadow-sm">
+                    <div class="inner p-3">
+                        <h3>12</h3>
+                        <p>Upcoming Bookings</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campsites Table -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="card-title font-weight-bold mb-0">My Campsites</h5>
+                        <button class="btn btn-success btn-sm">
+                            <i class="fas fa-plus mr-1"></i> Add New Site
+                        </button>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Price/Night</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#CS-001</td>
+                                    <td>Green Valley Meadow</td>
+                                    <td>Black Forest, DE</td>
+                                    <td>$25.00</td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-1"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#CS-002</td>
+                                    <td>River Edge Spot</td>
+                                    <td>Rhine River, DE</td>
+                                    <td>$18.50</td>
+                                    <td><span class="badge badge-warning">Maintenance</span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm mr-1"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

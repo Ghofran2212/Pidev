@@ -7,7 +7,8 @@
     </a>
 
     <!-- Mobile Toggle Button -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -15,34 +16,25 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-            Home
-          </a>
+          <a class="nav-link px-3" routerLink="/home" routerLinkActive="active">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/campsites" routerLinkActive="active">
-            Campsites
-          </a>
+          <a class="nav-link px-3" routerLink="/campsites" routerLinkActive="active">Campsites</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/outdoor-trips" routerLinkActive="active">
-            Outdoor Trips
-          </a>
+          <a class="nav-link px-3" routerLink="/bookings" routerLinkActive="active">My Bookings</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/shop" routerLinkActive="active">
-            Shop
-          </a>
+          <a class="nav-link px-3" routerLink="/shop" routerLinkActive="active">Shop</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/events" routerLinkActive="active">
-            Events
-          </a>
+          <a class="nav-link px-3" routerLink="/events" routerLinkActive="active">Events</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/forum" routerLinkActive="active">
-            Forum
-          </a>
+          <a class="nav-link px-3" routerLink="/forum" routerLinkActive="active">Forum</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" routerLink="/messages" routerLinkActive="active">Messages</a>
         </li>
       </ul>
 
@@ -65,14 +57,36 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" routerLink="/cart" title="Cart">
             <i class="fas fa-shopping-cart"></i>
-            <span class="badge badge-success badge-sm">2</span>
+            <span class="badge badge-success badge-sm" *ngIf="cartCount > 0">{{cartCount}}</span>
           </a>
         </li>
-        <li class="nav-item">
-          <button class="btn btn-success btn-sm ml-2 px-3" routerLink="/login">Login</button>
+
+        <!-- User Menu -->
+        <li class="nav-item dropdown" *ngIf="authService.currentUser$ | async as user; else loginBtn">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+            data-bs-toggle="dropdown">
+            <i class="fas fa-user-circle mr-1"></i>
+            <span>{{user.firstName}}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right shadow border-0 mt-2">
+            <li><a class="dropdown-item" routerLink="/admin/dashboard" *ngIf="user.role !== 'CAMPER'"><i
+                  class="fas fa-tachometer-alt mr-2"></i>Dashboard</a></li>
+            <li><a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Profile</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-danger" (click)="logout()" href="javascript:void(0)"><i
+                  class="fas fa-sign-out-alt mr-2"></i>Logout</a></li>
+          </ul>
         </li>
+
+        <ng-template #loginBtn>
+          <li class="nav-item">
+            <button class="btn btn-success btn-sm ml-2 px-3" routerLink="/login">Login</button>
+          </li>
+        </ng-template>
       </ul>
     </div>
   </div>
