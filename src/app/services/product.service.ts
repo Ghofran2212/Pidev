@@ -52,8 +52,41 @@ export class ProductService {
         return of(this.products);
     }
 
+    getProductsByProvider(providerId: string): Observable<Product[]> {
+        return of(this.products.filter(p => p.providerId === providerId));
+    }
+
     getProductById(id: string): Observable<Product | undefined> {
         return of(this.products.find(p => p.id === id));
+    }
+
+    addProduct(product: Omit<Product, 'id' | 'rating' | 'reviews'>): Observable<Product> {
+        const newProduct: Product = {
+            ...product,
+            id: Math.random().toString(36).substr(2, 9),
+            rating: 0,
+            reviews: []
+        };
+        this.products.push(newProduct);
+        return of(newProduct);
+    }
+
+    updateProduct(id: string, productData: Partial<Product>): Observable<Product | undefined> {
+        const index = this.products.findIndex(p => p.id === id);
+        if (index > -1) {
+            this.products[index] = { ...this.products[index], ...productData };
+            return of(this.products[index]);
+        }
+        return of(undefined);
+    }
+
+    deleteProduct(id: string): Observable<boolean> {
+        const index = this.products.findIndex(p => p.id === id);
+        if (index > -1) {
+            this.products.splice(index, 1);
+            return of(true);
+        }
+        return of(false);
     }
 
     addReview(productId: string, review: Omit<Review, 'id' | 'date'>): Observable<Product | undefined> {

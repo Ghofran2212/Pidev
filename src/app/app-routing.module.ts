@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 // BackOffice Imports
@@ -9,7 +10,7 @@ import { SponsorComponent } from './dashboards/sponsor/sponsor.component';
 import { GuideComponent } from './dashboards/guide/guide.component';
 import { GearProviderComponent } from './dashboards/gear-provider/gear-provider.component';
 import { CampsiteOwnerComponent } from './dashboards/campsite-owner/campsite-owner.component';
-import { DeliveryComponent as BackofficeDeliveryComponent } from './dashboards/delivery/delivery.component';
+import { BackofficeDeliveryComponent } from './dashboards/delivery/delivery.component';
 import { ForumModeratorComponent } from './dashboards/forum-moderator/forum-moderator.component';
 import { EventOrganizerComponent } from './dashboards/event-organizer/event-organizer.component';
 
@@ -28,6 +29,7 @@ import { DeliveryComponent } from './frontoffice/pages/delivery/delivery.compone
 import { CartComponent } from './frontoffice/pages/cart/cart.component';
 import { BookingsComponent } from './frontoffice/pages/bookings/bookings.component';
 import { ProductDetailComponent } from './frontoffice/pages/product-detail/product-detail.component';
+import { ProfileComponent } from './frontoffice/pages/profile/profile.component';
 
 const routes: Routes = [
   // Redirect root to front office
@@ -49,7 +51,8 @@ const routes: Routes = [
       { path: 'messages', component: MessagesComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: 'delivery', component: DeliveryComponent }
+      { path: 'delivery', component: DeliveryComponent },
+      { path: 'profile', component: ProfileComponent }
     ]
   },
 
@@ -73,7 +76,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), CommonModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,7 @@ import { RouteMapComponent } from './dashboards/route-map/route-map.component';
 import { SponsorComponent } from './dashboards/sponsor/sponsor.component';
 import { GuideComponent } from './dashboards/guide/guide.component';
 import { GearProviderComponent } from './dashboards/gear-provider/gear-provider.component';
+import { BackofficeDeliveryComponent } from './dashboards/delivery/delivery.component';
 
 // FrontOffice Components
 import { MainLayoutComponent as FrontMainLayoutComponent } from './frontoffice/layout/main-layout/main-layout.component';
@@ -28,6 +30,7 @@ import { ForumComponent } from './frontoffice/pages/forum/forum.component';
 import { MessagesComponent } from './frontoffice/pages/messages/messages.component';
 import { LoginComponent } from './frontoffice/pages/login/login.component';
 import { RegisterComponent } from './frontoffice/pages/register/register.component';
+import { ProfileComponent } from './frontoffice/pages/profile/profile.component';
 
 import { FormsModule } from '@angular/forms';
 import { DeliveryComponent } from './frontoffice/pages/delivery/delivery.component';
@@ -68,12 +71,15 @@ import { ProductDetailComponent } from './frontoffice/pages/product-detail/produ
     EventOrganizerComponent,
     CartComponent,
     BookingsComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    ProfileComponent,
+    BackofficeDeliveryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   providers: [
     provideClientHydration()

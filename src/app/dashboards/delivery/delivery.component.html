@@ -1,36 +1,217 @@
-<div class="content-header px-4 pt-4">
+<!-- DIAGNOSTIC: REMOVE LATER -->
+<div style="background: red; color: white; padding: 10px;">DELIVERY COMPONENT LOADED</div>
+
+<div class="content-header bg-primary text-white p-4">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 font-weight-bold">Delivery Assignments</h1>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h1 class="font-weight-bold mb-0">Delivery Management</h1>
+                <p class="mb-0 opacity-75">Track and manage your delivery assignments</p>
             </div>
+            <div class="d-flex gap-2">
+                <a routerLink="/home" class="btn btn-outline-light rounded-pill px-4 mr-2">
+                    <i class="fas fa-home mr-2"></i> Home
+                </a>
+                <a routerLink="/login" class="btn btn-danger rounded-pill px-4">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </a>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+            <span class="mr-3 text-white-50 small">Sort by:</span>
+            <select class="form-control form-control-sm border-0 w-auto"
+                (change)="onSortChange($any($event.target).value)">
+                <option value="date">Date (Newest)</option>
+                <option value="price">Highest Pay</option>
+            </select>
         </div>
     </div>
 </div>
 
-<section class="content px-4">
+<div class="content mt-4">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4 mb-4" *ngFor="let delivery of deliveries">
-                <div class="card border-0 shadow-sm border-left border-success h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <h6 class="font-weight-bold text-success">#{{delivery.id}}</h6>
-                            <span class="badge" [class.badge-primary]="delivery.status === 'In Transit'"
-                                [class.badge-warning]="delivery.status === 'Pending'"
-                                [class.badge-success]="delivery.status === 'Delivered'">{{delivery.status}}</span>
+            <div class="col-12">
+                <div class="card card-primary card-outline card-tabs shadow-sm border-0">
+                    <div class="card-header p-0 pt-1 border-bottom-0">
+                        <ul class="nav nav-tabs" id="deliveryTabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link px-4" [class.active]="activeTab === 'available'"
+                                    (click)="activeTab = 'available'" href="javascript:void(0)">
+                                    Available Deliveries <span
+                                        class="badge badge-warning ml-2">{{availableDeliveries.length}}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-4" [class.active]="activeTab === 'managed'"
+                                    (click)="activeTab = 'managed'" href="javascript:void(0)">
+                                    My Deliveries <span class="badge badge-info ml-2">{{myDeliveries.length}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Available Deliveries -->
+                        <div *ngIf="activeTab === 'available'" class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="border-0 px-4">Order ID</th>
+                                        <th class="border-0">Customer</th>
+                                        <th class="border-0">Destination</th>
+                                        <th class="border-0">Date</th>
+                                        <th class="border-0 text-right">Pay</th>
+                                        <th class="border-0 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let delivery of availableDeliveries" (click)="selectDelivery(delivery)"
+                                        class="cursor-pointer">
+                                        <td class="px-4 font-weight-bold text-primary">#{{delivery.orderId}}</td>
+                                        <td>{{delivery.customerName}}</td>
+                                        <td><i class="fas fa-map-marker-alt text-danger mr-2"></i>{{delivery.address}}
+                                        </td>
+                                        <td>{{delivery.date | date:'shortDate'}}</td>
+                                        <td class="text-right font-weight-bold text-success">{{delivery.price |
+                                            currency}}</td>
+                                        <td class="text-center" (click)="$event.stopPropagation()">
+                                            <button class="btn btn-primary btn-sm rounded-pill px-3 mr-2"
+                                                (click)="takeDelivery(delivery.id)">Accept</button>
+                                            <button class="btn btn-outline-danger btn-sm rounded-pill px-3"
+                                                (click)="declineDelivery(delivery.id)">Decline</button>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="availableDeliveries.length === 0">
+                                        <td colspan="6" class="text-center py-5 text-muted">
+                                            <i class="fas fa-box-open fa-3x mb-3 opacity-25"></i>
+                                            <p class="mb-0">No available deliveries at the moment.</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <p class="mb-1 small"><strong>Receiver:</strong> {{delivery.receiver}}</p>
-                        <p class="mb-3 small"><strong>Destination:</strong> {{delivery.destination}}</p>
-                        <hr>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Assigned: {{delivery.assigned}}</small>
-                            <button class="btn btn-success btn-sm px-3" (click)="markDelivered(delivery)"
-                                *ngIf="delivery.status !== 'Delivered'">Mark Delivered</button>
+
+                        <!-- Managed Tab -->
+                        <div *ngIf="activeTab === 'managed'" class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="border-0 px-4">Order ID</th>
+                                        <th class="border-0">Destination</th>
+                                        <th class="border-0">Earnings</th>
+                                        <th class="border-0">Status</th>
+                                        <th class="border-0 text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let delivery of myDeliveries" (click)="selectDelivery(delivery)"
+                                        class="cursor-pointer">
+                                        <td class="px-4 font-weight-bold">#{{delivery.orderId}}</td>
+                                        <td>{{delivery.address}}</td>
+                                        <td class="font-weight-bold text-success">{{delivery.price | currency}}</td>
+                                        <td>
+                                            <span class="badge badge-pill py-2 px-3"
+                                                [ngClass]="{'badge-info': delivery.status === 'PICKED_UP', 'badge-success': delivery.status === 'DELIVERED'}">
+                                                {{delivery.status}}
+                                            </span>
+                                        </td>
+                                        <td class="text-center border-0" (click)="$event.stopPropagation()">
+                                            <button *ngIf="delivery.status === 'PICKED_UP'"
+                                                class="btn btn-success btn-sm rounded-pill px-3"
+                                                (click)="completeDelivery(delivery.id)">
+                                                Mark as Delivered
+                                            </button>
+                                            <span *ngIf="delivery.status === 'DELIVERED'"
+                                                class="text-success small font-weight-bold">
+                                                <i class="fas fa-check-circle mr-1"></i> Completed
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="myDeliveries.length === 0">
+                                        <td colspan="5" class="text-center py-5 text-muted">
+                                            <i class="fas fa-truck fa-3x mb-3 opacity-25"></i>
+                                            <p class="mb-0">You haven't taken any deliveries yet.</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
+<!-- Delivery Details Modal Overlay -->
+<div *ngIf="selectedDelivery" class="modal-backdrop fade show" (click)="closeDetails()"></div>
+<div *ngIf="selectedDelivery" class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white border-0 py-3 px-4">
+                <h5 class="modal-title font-weight-bold">
+                    <i class="fas fa-shipping-fast mr-2"></i>Delivery Details #{{selectedDelivery.orderId}}
+                </h5>
+                <button type="button" class="close text-white" (click)="closeDetails()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row mb-4">
+                    <div class="col-md-6 border-right">
+                        <h6 class="text-uppercase small font-weight-bold text-muted mb-3">Customer Information</h6>
+                        <p class="mb-1"><strong>Name:</strong> {{selectedDelivery.customerName}}</p>
+                        <p class="mb-1"><strong>Address:</strong> {{selectedDelivery.address}}</p>
+                        <p class="mb-0"><strong>Status:</strong>
+                            <span class="badge badge-pill ml-2 px-3 py-2" [ngClass]="{
+                                'badge-primary': selectedDelivery.status === 'AVAILABLE',
+                                'badge-info': selectedDelivery.status === 'PICKED_UP',
+                                'badge-success': selectedDelivery.status === 'DELIVERED'
+                            }">{{selectedDelivery.status}}</span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-uppercase small font-weight-bold text-muted mb-3">Logistics Info</h6>
+                        <p class="mb-1"><strong>Est. Price:</strong> <span
+                                class="text-success font-weight-bold">{{selectedDelivery.price | currency}}</span></p>
+                        <p class="mb-1"><strong>Total Weight:</strong> {{selectedDelivery.weight}} kg</p>
+                        <p class="mb-0"><strong>Date:</strong> {{selectedDelivery.date | date:'medium'}}</p>
+                    </div>
+                </div>
+
+                <h6 class="text-uppercase small font-weight-bold text-muted mb-3">Item Manifest</h6>
+                <div class="table-responsive bg-light rounded p-2 mb-4">
+                    <table class="table table-sm table-borderless mb-0">
+                        <thead class="text-muted small">
+                            <tr>
+                                <th>Item Name</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-right">Weight</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of selectedDelivery.items">
+                                <td class="font-weight-medium">{{item.name}}</td>
+                                <td class="text-center">{{item.quantity}}</td>
+                                <td class="text-right">{{item.weight}} kg</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div *ngIf="selectedDelivery.instructions" class="alert alert-info border-0 shadow-sm mb-0">
+                    <h6 class="font-weight-bold small mb-2"><i class="fas fa-info-circle mr-2"></i>Special Instructions:
+                    </h6>
+                    <p class="mb-0 small">{{selectedDelivery.instructions}}</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0 p-4">
+                <button type="button" class="btn btn-light rounded-pill px-4" (click)="closeDetails()">Close</button>
+                <button *ngIf="selectedDelivery.status === 'AVAILABLE'" class="btn btn-primary rounded-pill px-4"
+                    (click)="takeDelivery(selectedDelivery.id); closeDetails()">Accept Responsibility</button>
+                <button *ngIf="selectedDelivery.status === 'PICKED_UP'" class="btn btn-success rounded-pill px-4"
+                    (click)="completeDelivery(selectedDelivery.id); closeDetails()">Complete Delivery</button>
+            </div>
+        </div>
+    </div>
+</div>

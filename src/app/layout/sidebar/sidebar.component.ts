@@ -7,6 +7,7 @@ interface MenuItem {
   icon: string;
   link: string;
   roles: UserRole[];
+  queryParams?: any;
 }
 
 @Component({
@@ -23,10 +24,14 @@ export class SidebarComponent implements OnInit {
     { title: 'Campsites', icon: 'fa-campground', link: '/admin/campsites', roles: [UserRole.CAMPSITE_OWNER, UserRole.ADMIN] },
     { title: 'Wild Campsites', icon: 'fa-map-marked-alt', link: '/admin/route-map', roles: [UserRole.WILD_CAMPSITE_ADMIN, UserRole.ADMIN] },
     { title: 'Sponsorships', icon: 'fa-handshake', link: '/admin/sponsor', roles: [UserRole.SPONSOR, UserRole.ADMIN] },
-    { title: 'Deliveries', icon: 'fa-truck', link: '/admin/deliveries', roles: [UserRole.DELIVERY_PERSONNEL, UserRole.ADMIN] },
+    { title: 'Available Deliveries', icon: 'fa-truck-loading', link: '/admin/deliveries', roles: [UserRole.DELIVERY_PERSONNEL], queryParams: { tab: 'available' } },
+    { title: 'My Deliveries', icon: 'fa-shipping-fast', link: '/admin/deliveries', roles: [UserRole.DELIVERY_PERSONNEL], queryParams: { tab: 'managed' } },
+    { title: 'System Deliveries', icon: 'fa-truck', link: '/admin/deliveries', roles: [UserRole.ADMIN] },
     { title: 'Forum Moderation', icon: 'fa-comments', link: '/admin/forum-mod', roles: [UserRole.FORUM_MODERATOR, UserRole.ADMIN] },
     { title: 'Trips', icon: 'fa-compass', link: '/admin/guide', roles: [UserRole.GUIDE, UserRole.ADMIN] },
     { title: 'Events', icon: 'fa-calendar-alt', link: '/admin/events', roles: [UserRole.EVENT_ORGANIZER, UserRole.ADMIN] },
+    { title: 'Back to Site', icon: 'fa-home', link: '/home', roles: [UserRole.ADMIN, UserRole.GEAR_PROVIDER, UserRole.CAMPSITE_OWNER, UserRole.WILD_CAMPSITE_ADMIN, UserRole.SPONSOR, UserRole.DELIVERY_PERSONNEL, UserRole.FORUM_MODERATOR, UserRole.GUIDE, UserRole.EVENT_ORGANIZER] },
+    { title: 'Logout', icon: 'fa-sign-out-alt', link: '/login', roles: [UserRole.ADMIN, UserRole.GEAR_PROVIDER, UserRole.CAMPSITE_OWNER, UserRole.WILD_CAMPSITE_ADMIN, UserRole.SPONSOR, UserRole.DELIVERY_PERSONNEL, UserRole.FORUM_MODERATOR, UserRole.GUIDE, UserRole.EVENT_ORGANIZER] },
   ];
 
   filteredMenuItems: MenuItem[] = [];

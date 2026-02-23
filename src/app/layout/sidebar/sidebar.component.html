@@ -18,9 +18,11 @@
         <li class="nav-header text-white-50">MENU</li>
 
         <li class="nav-item" *ngFor="let item of filteredMenuItems">
-          <a [routerLink]="item.link" routerLinkActive="active" class="nav-link nav-link-custom">
-            <i class="nav-icon fas {{item.icon}}"></i>
-            <p>{{item.title}}</p>
+          <a [routerLink]="item.link" [queryParams]="item.queryParams"
+            class="nav-link text-white d-flex align-items-center py-3 px-4 mb-2 rounded transition-all"
+            routerLinkActive="active-link shadow-lg">
+            <i class="fas {{item.icon}} mr-3 opacity-75"></i>
+            <span class="font-weight-medium">{{item.title}}</span>
           </a>
         </li>
 

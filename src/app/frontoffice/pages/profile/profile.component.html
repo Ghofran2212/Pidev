@@ -1,0 +1,66 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-success text-white py-4 text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-user-circle fa-5x"></i>
+                    </div>
+                    <h2 class="mb-0">{{user?.firstName}} {{user?.lastName}}</h2>
+                    <p class="mb-0 opacity-75">{{user?.role}}</p>
+                </div>
+                <div class="card-body p-4">
+                    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{successMessage}}
+                        <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0 font-weight-bold">Personal Information</h4>
+                        <button class="btn btn-outline-success btn-sm" (click)="toggleEdit()">
+                            <i class="fas" [ngClass]="editMode ? 'fa-times' : 'fa-edit'"></i>
+                            {{editMode ? 'Cancel' : 'Edit Profile'}}
+                        </button>
+                    </div>
+
+                    <form (ngSubmit)="saveProfile()">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted small">First Name</label>
+                                <input type="text" class="form-control" [(ngModel)]="editedUser.firstName"
+                                    name="firstName" [disabled]="!editMode">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-muted small">Last Name</label>
+                                <input type="text" class="form-control" [(ngModel)]="editedUser.lastName"
+                                    name="lastName" [disabled]="!editMode">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Email Address</label>
+                            <input type="email" class="form-control" [(ngModel)]="editedUser.email" name="email"
+                                [disabled]="true">
+                            <small class="text-muted">Email cannot be changed.</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Phone Number</label>
+                            <input type="tel" class="form-control" [(ngModel)]="editedUser.phoneNumber"
+                                name="phoneNumber" [disabled]="!editMode" placeholder="Add phone number">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Role</label>
+                            <input type="text" class="form-control" [value]="user?.role" disabled>
+                        </div>
+
+                        <div class="mt-4 d-grid" *ngIf="editMode">
+                            <button type="submit" class="btn btn-success py-2">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
